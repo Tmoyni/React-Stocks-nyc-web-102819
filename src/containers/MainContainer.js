@@ -17,6 +17,7 @@ class MainContainer extends Component {
       .then(stocks => 
           this.setState({
             allStocks: stocks,
+            displayStocks: stocks
           })
         )
   }
@@ -33,19 +34,45 @@ class MainContainer extends Component {
     })
   } 
 
-  
+  handleSort = (value) => {
+    let arr = []
+    switch(value){
+      case "Alphabetically":
+        arr = this.state.displayStocks.sort((a,b) => a.name > b.name ? 1 : -1)
+        break;
+      case "Price":
+          arr = this.state.displayStocks.sort((a,b) => a.price > b.price ? 1 : -1)
+        break;
+      default:
+        console.log("Wrong choice")
+    }
+    this.setState({ displayStocks: arr })
+  }
+
+  filterStocks = (value) => {
+    if(value !== "All"){
+      this.setState({ 
+        displayStocks: this.state.allStocks.filter( stock => stock.type === value) 
+      })
+    } else {
+      this.setState({
+        displayStocks: this.state.allStocks
+      })
+    }
+  }
+
 
 
   render() {
     console.log(this.state)
     return (
       <div>
-        <SearchBar/>
+        <SearchBar handleSort={this.handleSort} filterStocks={this.filterStocks}/>
 
           <div className="row">
             <div className="col-8">
 
-              <StockContainer stocks={this.state.allStocks} buyClick={this.buyClick}/>
+              <StockContainer stocks={this.state.displayStocks} buyClick={this.buyClick}/>
 
             </div>
             <div className="col-4">

@@ -4,11 +4,12 @@ import Stock from '../components/Stock'
 class PortfolioContainer extends Component {
 
   render() {
-    console.log(this.props)
+    let uniqueArr = Array.from(new Set(this.props.stocks))
+    
     return (
       <div>
         <h2>My Portfolio</h2>
-        { this.props.stocks.map( stock => 
+        { uniqueArr.map( stock => 
             <Stock stock={stock} key={stock.id} onClick={this.props.sellClick}/>)
         }
       </div>
